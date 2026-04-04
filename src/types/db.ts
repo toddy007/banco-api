@@ -1,14 +1,13 @@
 export interface UserSchema {
-    _id: string;
     username: string;
     email: string;
     password: string;
     balance: number;
-    transictions: TransictionHistory[]
-    createdDate: Date
+    transictions: TransictionHistory[];
+    createdDate: Date;
 }
 
-export type Account = Exclude<UserSchema, 'password' | 'balance' | 'createdDate' | 'transictions'>;
+export type Account = Exclude<UserSchema, 'password' | 'balance' | 'transictions' | 'createdDate'>;
 
 export interface TransictionHistory {
     _id: string;
