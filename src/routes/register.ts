@@ -2,27 +2,31 @@ import { RouteOptions } from 'fastify';
 import { z } from 'zod';
 import { genSaltSync, hashSync } from 'bcrypt-ts';
 import { db } from '../';
-const usernameValidatorRegex = /^(?!.*\s{2,})(?!\s)(?!.*\s$)[a-zA-ZÀ-ÿ\s]+$/;
-const passwordValidatorRegex = /^(?=\S+$)(?=.*[a-z])(?=(?:.*[A-Z]){2,})(?=(?:.*[0-9]){4,})(?=.*[\W_]).+$/;
+import { usernameDefault, emailDefault, passwordDefault } from '../utils/defaultZodTypes';
+import { errorDefault, replyDefault } from '../utils/defaultResponses'; 
 
 export default {
     method: 'POST',
     url: '/register',
     schema: {
-        querystring: z.object({
-            username: z.string().max(100).regex(usernameValidatorRegex),
-            email: z.email(),
-            password: z.string().regex(passwordValidatorRegex),
+        body: z.object({
+            username: usernameDefault,
+            email: emailDefault,
+            password: passwordDefault,
         }),
+        response: {
+            201: replyDefault,
+            409: errorDefault,
+        },
     },
     handler: async (request, reply) => {
-        const { username, email, password } = request.query as RegisterQuery;
+        const { username, email, password } = request.body as RegisterBody;
 
         const user = await db.users.findOne({ email }, ['_id']);
         if (user) 
             return reply
                 .status(409)
-                .send({ error: 'Email already registered.' })
+                .send({ error: 'Email already registered' })
         
         const salt = genSaltSync(10);
         const passwordHash = hashSync(password, salt);
@@ -36,11 +40,11 @@ export default {
 
         return reply
             .status(201)
-            .send({ message: 'User created successfully.' });
+            .send({ message: 'User created successfully' });
     },
 } as RouteOptions;
 
-export interface RegisterQuery {
+export interface RegisterBody {
     username: string;
     email: string;
     password: string;
