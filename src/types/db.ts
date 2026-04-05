@@ -7,7 +7,10 @@ export interface UserSchema {
     createdDate: Date;
 }
 
-export type Account = Omit<UserSchema, 'password' | 'balance' | 'transictions' | 'createdDate'>;
+export type Account = Omit<
+    UserSchema,
+    'password' | 'balance' | 'transictions' | 'createdDate'
+>;
 
 export interface TransictionHistory {
     type: TransictionType;

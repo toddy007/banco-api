@@ -6,11 +6,11 @@ export const handleLoadRoutes = async (webserver: FastifyInstance) => {
     const routesPath = await globSync('./src/routes/*.ts');
 
     for (const routePath of routesPath) {
-        const { default: route }: { default: RouteOptions } = await import('../../' + routePath);
+        const { default: route }: { default: RouteOptions } = await import(
+            '../../' + routePath
+        );
         console.log('[ROUTE] Route "' + route.url + '" loaded');
 
-        webserver
-            .withTypeProvider<ZodTypeProvider>()
-            .route(route);
-    };
+        webserver.withTypeProvider<ZodTypeProvider>().route(route);
+    }
 };

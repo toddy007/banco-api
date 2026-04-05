@@ -15,15 +15,17 @@ export default {
         }),
         response: {
             200: z.object({
-                transictions: z.array(z.object({
-                    type: z.string(),
-                    accountManaged: z.object({
-                        username: z.string(),
-                        email: z.email(),
+                transictions: z.array(
+                    z.object({
+                        type: z.string(),
+                        accountManaged: z.object({
+                            username: z.string(),
+                            email: z.email(),
+                        }),
+                        amount: z.number(),
+                        date: z.date(),
                     }),
-                    amount: z.number(),
-                    date: z.date(),
-                })),
+                ),
             }),
             404: errorDefault,
             401: errorDefault,
@@ -32,7 +34,10 @@ export default {
     handler: async (request, reply) => {
         const { email, password } = request.body as TransictionsBody;
 
-        const user = await db.users.findOne({ email }, ['password', 'transictions']);
+        const user = await db.users.findOne({ email }, [
+            'password',
+            'transictions',
+        ]);
         if (!user)
             return reply.status(404).send({ error: 'Email not registered' });
 

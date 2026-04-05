@@ -5,5 +5,5 @@ export const replyDefault = z.object({
 });
 
 export const errorDefault = z.object({
-    error: z.string()
+    error: z.string(),
 });

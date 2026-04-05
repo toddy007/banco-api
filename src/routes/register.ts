@@ -2,8 +2,12 @@ import { RouteOptions } from 'fastify';
 import { z } from 'zod';
 import { genSaltSync, hashSync } from 'bcrypt-ts';
 import { db } from '../';
-import { usernameDefault, emailDefault, passwordDefault } from '../utils/defaultZodTypes';
-import { errorDefault, replyDefault } from '../utils/defaultResponses'; 
+import {
+    usernameDefault,
+    emailDefault,
+    passwordDefault,
+} from '../utils/defaultZodTypes';
+import { errorDefault, replyDefault } from '../utils/defaultResponses';
 
 export default {
     method: 'POST',
@@ -23,11 +27,11 @@ export default {
         const { username, email, password } = request.body as RegisterBody;
 
         const user = await db.users.findOne({ email }, ['_id']);
-        if (user) 
+        if (user)
             return reply
                 .status(409)
-                .send({ error: 'Email already registered' })
-        
+                .send({ error: 'Email already registered' });
+
         const salt = genSaltSync(10);
         const passwordHash = hashSync(password, salt);
 
@@ -38,9 +42,7 @@ export default {
             createdDate: new Date(),
         });
 
-        return reply
-            .status(201)
-            .send({ message: 'User created successfully' });
+        return reply.status(201).send({ message: 'User created successfully' });
     },
 } as RouteOptions;
 

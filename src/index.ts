@@ -1,6 +1,9 @@
 import Fastify from 'fastify';
 import { handleStart } from './handlers/handleStart';
-import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
+import {
+    serializerCompiler,
+    validatorCompiler,
+} from 'fastify-type-provider-zod';
 import { userModel } from './database/modelExports';
 import { connect } from 'mongoose';
 
@@ -11,9 +14,10 @@ webserver.setSerializerCompiler(serializerCompiler);
 
 handleStart(webserver);
 
-connect(process.env.MONGODB!)
-    .then(() => console.log('[MONGODB] Database connected'));
+connect(process.env.MONGODB!).then(() =>
+    console.log('[MONGODB] Database connected'),
+);
 
 export const db = {
     users: userModel,
-}
+};

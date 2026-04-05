@@ -14,7 +14,11 @@ export default {
             email: emailDefault,
             password: passwordDefault,
             userEmailToTransfer: emailDefault,
-            amount: z.number().int('Amount must be a integer').gte(1, 'Amount must be greater than 0').lte(1000000, 'Amount must be less than 1.000.000') // por algum motivo isso retorna Bad Request inves da mensagem
+            amount: z
+                .number()
+                .int('Amount must be a integer')
+                .gte(1, 'Amount must be greater than 0')
+                .lte(1000000, 'Amount must be less than 1.000.000'), // por algum motivo isso retorna Bad Request inves da mensagem
         }),
         response: {
             200: replyDefault,
@@ -24,7 +28,8 @@ export default {
         },
     },
     handler: async (request, reply) => {
-        const { email, password, userEmailToTransfer, amount } = request.body as TransferBody;
+        const { email, password, userEmailToTransfer, amount } =
+            request.body as TransferBody;
 
         const user = await db.users.findOne({ email });
         if (!user)
@@ -34,12 +39,18 @@ export default {
         if (!correctPassword)
             return reply.status(401).send({ error: 'Incorrect password.' });
 
-        const userToTransfer = await db.users.findOne({ email: userEmailToTransfer });
+        const userToTransfer = await db.users.findOne({
+            email: userEmailToTransfer,
+        });
         if (!userToTransfer)
-            return reply.status(404).send({ error: 'User to transfer not registered.' });
+            return reply
+                .status(404)
+                .send({ error: 'User to transfer not registered.' });
 
         if (user.balance < amount)
-            return reply.status(400).send({ error: 'You don\'t have enough balance to transfer.' });
+            return reply
+                .status(400)
+                .send({ error: "You don't have enough balance to transfer." });
 
         user.balance -= amount;
         userToTransfer.balance += amount;
@@ -66,7 +77,9 @@ export default {
         await user.save();
         await userToTransfer.save();
 
-        return reply.status(200).send({ message: 'You transferred ' + amount + ' successfully.' });
+        return reply
+            .status(200)
+            .send({ message: 'You transferred ' + amount + ' successfully.' });
     },
 } as RouteOptions;
 
