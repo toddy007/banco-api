@@ -11,8 +11,8 @@ webserver.setSerializerCompiler(serializerCompiler);
 
 handleStart(webserver);
 
-await connect(process.env.MONGODB!)
-console.log('[MONGODB] Database connected')
+connect(process.env.MONGODB!)
+    .then(() => console.log('[MONGODB] Database connected'));
 
 export const db = {
     users: userModel,
