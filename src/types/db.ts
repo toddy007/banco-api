@@ -7,10 +7,9 @@ export interface UserSchema {
     createdDate: Date;
 }
 
-export type Account = Exclude<UserSchema, 'password' | 'balance' | 'transictions' | 'createdDate'>;
+export type Account = Omit<UserSchema, 'password' | 'balance' | 'transictions' | 'createdDate'>;
 
 export interface TransictionHistory {
-    _id: string;
     type: TransictionType;
     accountManaged: Account;
     amount: number;
@@ -18,6 +17,6 @@ export interface TransictionHistory {
 }
 
 export enum TransictionType {
-    Received,
-    Sent,
+    Received = 'received',
+    Sent = 'sent',
 }
