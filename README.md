@@ -32,6 +32,8 @@ I will explain to you how to get the **MongoDB URL** that you will need to put i
 - Add the copied URL into `.env` in `MONGODB`.
 - Replace `<db_password>` by the password copied previously.
 - All done.
+# Running the Project
+- After all that, you can just type `npm start` in your terminal and the project will run, if you did not make any mistakes.
 # Routes
 ### /balance [POST]
 This one gets your current balance in bank.<br>
@@ -41,7 +43,7 @@ In all routes you need to pass a body in `POST` method.
 ```js
 {
   email: "example@gmail.com",
-  password "EXample$1234"
+  password: "EXample$1234"
 }
 ```
 **Returns**:
@@ -60,7 +62,7 @@ Register an email into the database.
 {
   username: "Kauã Eduardo",
   email: "example@gmail.com",
-  password "EXample$1234"
+  password: "EXample$1234"
 }
 ```
 **Returns**:
@@ -77,7 +79,7 @@ Transfer an amount money to given email.
 ```js
 {
   email: "example@gmail.com",
-  password "EXample$1234",
+  password: "EXample$1234",
   userEmailToTransfer: "anotherExample@gmail.com",
   amount: 100
 }
@@ -98,7 +100,7 @@ Returns your transictions history to the most old to the most recent.
 ```js
 {
   email: "example@gmail.com",
-  password "EXample$1234"
+  password: "EXample$1234"
 }
 ```
 **Returns**:
@@ -106,12 +108,12 @@ Returns your transictions history to the most old to the most recent.
 {
   transictions: [
     {
-      type: "sent" // can be "received"
+      type: "sent", // can be "received"
       accountManaged: {
         username: "Ewerton",
         email: "anotherExample@gmail.com"
       },
-      amount: 100
+      amount: 100,
       date: // a new Date() from the date you transferred
     }
   ]
