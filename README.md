@@ -91,3 +91,54 @@ Transfer an amount money to given email.
 - **400**: when you don't have enough money.
 - **401**: when the password is wrong.
 - **404**: when your email is not registered or the user to transfer email is not registered.
+### /transictions [POST]
+Returns your transictions history to the most old to the most recent.
+
+**Body to pass**:
+```js
+{
+  email: "example@gmail.com",
+  password "EXample$1234"
+}
+```
+**Returns**:
+```js
+{
+  transictions: [
+    {
+      type: "sent" // can be "received"
+      accountManaged: {
+        username: "Ewerton",
+        email: "anotherExample@gmail.com"
+      },
+      amount: 100
+      date: // a new Date() from the date you transferred
+    }
+  ]
+}
+```
+**Possibly responses status**:
+- **200**: the request was a success.
+- **401**: when the password is wrong.
+- **404**: when your email is not registered.
+# Type Validation
+I use Zod for validate the data you pass in body.
+- `username`: a string that must be less than **100** characters.
+  - **requirements**: just spaces and letters, no spaces at the start and at the end and no two spaces in a row.
+- `password`: a string with minimum **8** characters.
+  - **requirements**: two uppercase letters, one symbol, four numbers and no spaces.
+- `email`: a valid email.
+- `userEmailToTransfer`: a valid email.
+- `amount`: a integer number.
+  - **requirements**: greater than **1**, less than **1000000**.
+# Default Responses
+Common responses you can found.
+
+**Reply**:
+```js
+{ message: String } // returns a default message when no errors
+```
+**Error**:
+```js
+{ error: String } // when the route could not accept your request
+```
